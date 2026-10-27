@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="bs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>O meni – Amar Helać</title>
+  <meta name="description" content="Digitalni CV – Amar Helać, IT Specijalista | Podrška i automatizacija. Radno iskustvo, vještine, projekti i offline chatbot.">
+  <meta property="og:title" content="Amar Helać – Digital CV">
+  <meta property="og:description" content="IT Specialist | Support & Automation – experience, skills, projects and an offline chatbot.">
+  <meta property="og:image" content="assets/cv.gif">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💻</text></svg>">
+  <link rel="preload" href="fonts/SourceSansPro-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/SourceSansPro-SemiBold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page-about">
+  <div class="app">
+    <aside class="sidebar" id="sidebar" aria-label="Navigacija">
+      <div class="sidebar-inner">
+        <div class="sb-header">
+          <button class="sb-collapse" id="sbCollapse" type="button" aria-label="Zatvori meni"><span class="ms">keyboard_double_arrow_left</span></button>
+        </div>
+        <nav class="sb-nav">
+          <div class="sb-sec">Info</div>
+          <a class="sb-link" href="#/" data-route="about"><span class="ms">account_circle</span><span class="sb-label" data-i18n="page_about"></span></a>
+          <div class="sb-sec">Projects</div>
+          <a class="sb-link" href="#/experience" data-route="experience"><span class="ms">work</span><span class="sb-label" data-i18n="page_experience"></span></a>
+          <a class="sb-link" href="#/chatbot" data-route="chatbot"><span class="ms">smart_toy</span><span class="sb-label">Chat Bot</span></a>
+        </nav>
+        <div class="sb-sep"></div>
+        <div class="sb-user">
+          <div class="widget">
+            <label class="widget-label" id="langLabel">Select Language / Izaberite jezik / Sprache auswählen</label>
+            <div class="select" id="langSelect">
+              <button class="select-box" type="button" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="langLabel">
+                <span class="select-value"></span><span class="ms select-chevron">expand_more</span>
+              </button>
+              <ul class="select-menu" role="listbox" hidden></ul>
+            </div>
+          </div>
+          <p class="sb-caption">Digital CV by Amar Helać</p>
+        </div>
+      </div>
+    </aside>
+    <div class="sb-backdrop" id="sbBackdrop"></div>
+    <button class="sb-expand" id="sbExpand" type="button" aria-label="Otvori meni"><span class="ms">keyboard_double_arrow_right</span></button>
+
+    <main class="main" id="main">
+      <div class="block" id="page"></div>
+      <div class="bottom" id="bottom" hidden></div>
+    </main>
+  </div>
+
+  <noscript><p style="padding:2rem;color:#fff">Za prikaz sajta potreban je JavaScript.</p></noscript>
+  <script src="js/config.js"></script>
+  <script src="js/cv-data.js"></script>
+  <script src="js/chatbot.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

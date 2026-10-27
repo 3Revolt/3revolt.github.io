@@ -1,0 +1,558 @@
+/* =========================================================================
+   Izgled preuzet 1:1 sa Streamlit verzije (mjere izmjerene na živoj stranici).
+   Tema iz .streamlit/config.toml: primary #d33682, secondary #586e75, tekst #fff.
+   ========================================================================= */
+
+@font-face { font-family: "Source Sans Pro"; src: url("../fonts/SourceSansPro-Regular.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Source Sans Pro"; src: url("../fonts/SourceSansPro-Italic.woff2") format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: "Source Sans Pro"; src: url("../fonts/SourceSansPro-SemiBold.woff2") format("woff2"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Source Sans Pro"; src: url("../fonts/SourceSansPro-SemiBoldItalic.woff2") format("woff2"); font-weight: 600; font-style: italic; font-display: swap; }
+@font-face { font-family: "Source Sans Pro"; src: url("../fonts/SourceSansPro-Bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Source Sans Pro"; src: url("../fonts/SourceSansPro-BoldItalic.woff2") format("woff2"); font-weight: 700; font-style: italic; font-display: swap; }
+@font-face { font-family: "Material Symbols Rounded"; src: url("../fonts/MaterialSymbols-Rounded.woff2") format("woff2"); font-weight: 100 700; font-style: normal; font-display: block; }
+
+:root {
+  --primary: #d33682;
+  --secondary-bg: #586e75;
+  --text: #fff;
+  --sidebar-text: #00ff00;
+  --link: rgb(46, 154, 255);
+  --sidebar-width: 336px;
+  --gap: 16px;
+  --font: "Source Sans Pro", sans-serif;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text);
+  background-color: #0e1117;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  -webkit-font-smoothing: auto;
+  overflow: hidden;
+}
+
+/* Pozadine po stranicama - iste slike kao u Streamlit verziji */
+body.page-about { background-image: url("https://wallpapercave.com/wp/wp9016401.jpg"); }
+body.page-experience { background-image: url("https://wallpaperbat.com/img/664560-workplace-wallpaper.jpg"); }
+body.page-chatbot {
+  background-image: url("https://cdn.prod.website-files.com/624629e0591bdc3b300cb644/6594382bbafcb2ef0818295f_VA-HUb%202.png");
+  background-attachment: fixed;
+}
+
+.ms {
+  font-family: "Material Symbols Rounded";
+  font-weight: normal;
+  font-style: normal;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: "liga";
+  font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+a { color: var(--link); }
+
+/* ------------------------------------------------------------------------- */
+/* Raspored                                                                  */
+/* ------------------------------------------------------------------------- */
+
+.app {
+  display: flex;
+  height: 100vh;
+  height: 100dvh;
+}
+
+.main {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  scroll-behavior: smooth;
+}
+
+.block {
+  width: 100%;
+  max-width: 736px;
+  padding: 128px 16px 160px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+body.page-chatbot .block { padding-bottom: 16px; flex: 1 0 auto; }
+
+/* ------------------------------------------------------------------------- */
+/* Sidebar                                                                   */
+/* ------------------------------------------------------------------------- */
+
+.sidebar {
+  position: relative;
+  flex: 0 0 var(--sidebar-width);
+  width: var(--sidebar-width);
+  height: 100%;
+  background-color: var(--secondary-bg);
+  color: var(--sidebar-text);
+  transition: margin-left 0.3s ease, transform 0.3s ease;
+  z-index: 20;
+}
+
+/* Uska traka uz desnu ivicu sidebara (kao u Streamlitu) */
+.sidebar::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 12px;
+  height: 100%;
+  background: var(--secondary-bg);
+  pointer-events: none;
+}
+
+.sidebar-inner {
+  position: relative;
+  height: 100%;
+  overflow-y: auto;
+  padding: 0 6px;
+  background-image: url("../assets/Background.gif");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: local;
+  scrollbar-width: none;
+}
+.sidebar-inner::-webkit-scrollbar { display: none; }
+
+.sidebar * { color: var(--sidebar-text); }
+
+.sb-header {
+  height: 78px;
+  padding: 22px 18px 24px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.sb-collapse, .sb-expand {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  line-height: 0;
+}
+.sb-collapse .ms, .sb-expand .ms { font-size: 24px; }
+.sb-collapse { opacity: 0; transition: opacity 0.2s; }
+.sidebar:hover .sb-collapse, .sb-collapse:focus-visible { opacity: 1; }
+.sb-collapse:hover, .sb-expand:hover { background: rgba(255, 255, 255, 0.12); }
+
+.sb-expand {
+  position: fixed;
+  top: 18px;
+  left: 18px;
+  z-index: 15;
+  color: var(--text);
+  display: none;
+}
+.sb-expand .ms { color: var(--text); }
+
+body.sidebar-collapsed .sidebar { margin-left: calc(-1 * var(--sidebar-width)); }
+body.sidebar-collapsed .sb-expand { display: block; }
+
+.sb-nav {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 2px;
+}
+
+.sb-sec {
+  margin: 8px 18px 4px;
+  padding-right: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21px;
+}
+
+.sb-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  margin: 2px 18px;
+  padding: 0 8px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 32px;
+  text-decoration: none;
+}
+.sb-link .ms { font-size: 14.4px; font-weight: 600; width: 14.4px; }
+.sb-link:hover { background-color: rgba(255, 255, 255, 0.1); }
+.sb-link.active { font-weight: 600; }
+
+.sb-sep {
+  padding-top: 16px;
+  border-bottom: 1px solid rgba(250, 250, 250, 0.2);
+}
+
+.sb-user {
+  padding: 24px 18px 96px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+}
+
+.sb-caption { margin: 0; }
+
+/* ------------------------------------------------------------------------- */
+/* Widgeti (labela, padajući meni, polja forme, dugmad)                      */
+/* ------------------------------------------------------------------------- */
+
+.widget-label {
+  display: block;
+  font-size: 14px;
+  line-height: 22.4px;
+  margin-bottom: 4px;
+}
+
+.select { position: relative; }
+
+.select-box {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 8px 0 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  font: inherit;
+  font-size: 16px;
+  line-height: 22.4px;
+  cursor: pointer;
+  text-align: left;
+}
+.select-box:focus, .select.open .select-box { outline: none; border-color: var(--primary); }
+.select-chevron { font-size: 24px; }
+
+.select-menu {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background: var(--secondary-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  z-index: 30;
+}
+.sidebar .select-menu li {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  color: #fff;
+  cursor: pointer;
+}
+.select-menu li:hover, .select-menu li.focused { background: rgba(255, 255, 255, 0.12); }
+
+.text-field {
+  display: flex;
+  border: 1px solid var(--secondary-bg);
+  border-radius: 8px;
+  background: var(--secondary-bg);
+  transition: border-color 0.2s;
+}
+.text-field:focus-within { border-color: var(--primary); }
+.text-field input, .text-field textarea {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 16px;
+  line-height: 22.4px;
+}
+.text-field input { height: 38px; padding: 8px 8px 8px 12px; }
+.text-field textarea { height: 91px; min-height: 91px; padding: 12px; resize: vertical; }
+
+.number-field input { -moz-appearance: textfield; }
+.number-field input::-webkit-outer-spin-button, .number-field input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.step-btn {
+  width: 32px;
+  height: 38px;
+  border: 0;
+  padding: 1px 6px;
+  background: var(--secondary-bg);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0;
+}
+.step-btn .ms { font-size: 16px; font-weight: 600; }
+.step-btn:last-child { border-radius: 0 8px 8px 0; }
+.step-btn:disabled { color: rgba(255, 255, 255, 0.4); cursor: not-allowed; }
+.step-btn:disabled .ms { color: rgba(255, 255, 255, 0.4); }
+.step-btn:not(:disabled):hover { background: var(--primary); }
+
+.honeypot { position: absolute !important; left: -10000px !important; width: 1px; height: 1px; overflow: hidden; }
+
+.st-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  min-height: 40px;
+  padding: 4px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(8, 8, 8, 0);
+  color: var(--text);
+  font: inherit;
+  font-size: 16px;
+  line-height: 25.6px;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+}
+.st-btn:hover { border-color: var(--primary); color: var(--primary); }
+.st-btn:active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.st-btn:focus-visible { outline: none; box-shadow: 0 0 0 2px rgba(211, 54, 130, 0.5); }
+.st-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Obično HTML dugme "Kontaktirajte me" - izvorni izgled dugmeta u browseru, kao u Streamlit verziji */
+.html-btn {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* Poruke (info / uspjeh / greška) */
+.alert {
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 16px;
+  line-height: 25.6px;
+}
+.alert p { margin: 0; }
+.alert-info { background: rgba(61, 157, 243, 0.2); color: rgb(199, 235, 255); }
+.alert-success { background: rgba(61, 213, 109, 0.2); color: rgb(223, 253, 233); }
+.alert-error { background: rgba(255, 108, 108, 0.2); color: rgb(255, 222, 222); }
+.alert a, .alert strong { color: inherit; }
+
+.spinner-row { display: flex; align-items: center; gap: 8px; font-size: 16px; }
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-top-color: var(--text);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ------------------------------------------------------------------------- */
+/* Tipografija sadržaja (kao Streamlit markdown)                             */
+/* ------------------------------------------------------------------------- */
+
+.md > * { margin: 0 0 16px; }
+.md > :last-child { margin-bottom: 0; }
+.md strong { font-weight: 600; }
+.md ul, .md ol { padding-left: 0; }
+.md li { margin: 3.2px 0 3.2px 19.2px; padding-left: 9.6px; }
+.md hr { border: 0; border-bottom: 1px solid rgba(250, 250, 250, 0.2); margin: 32px 0; }
+
+.heading { margin-bottom: -16px; }
+.heading h1, .heading h2, .heading h3 { margin: 0; color: var(--text); }
+h1 { font-size: 44px; font-weight: 700; line-height: 52.8px; padding: 20px 0 16px; }
+h2 { font-size: 36px; font-weight: 600; line-height: 43.2px; padding: 16px 0; letter-spacing: -0.18px; }
+h3 { font-size: 28px; font-weight: 600; line-height: 33.6px; padding: 12px 0 16px; letter-spacing: -0.14px; scroll-margin-top: 24px; }
+
+.spacer { height: 0; }
+
+.columns { display: flex; gap: var(--gap); }
+.columns.center { align-items: center; }
+.col { min-width: 0; display: flex; flex-direction: column; gap: var(--gap); }
+.col-1 { flex: 1 1 0; }
+.col-3 { flex: 3 1 0; }
+/* Kolone [1, 3] kao u Streamlitu: širina = udio - pola razmaka */
+.columns.split-1-3 > .col-1 { flex: 0 0 calc(25% - 8px); }
+.columns.split-1-3 > .col-3 { flex: 0 0 calc(75% - 8px); }
+.col img { display: block; width: 100%; height: auto; border-radius: 8px; }
+
+.br-gap { height: 76.8px; }
+
+/* ------------------------------------------------------------------------- */
+/* Chat                                                                      */
+/* ------------------------------------------------------------------------- */
+
+.chat-message {
+  display: flex;
+  gap: 8px;
+  padding: 16px;
+  background-color: rgba(240, 242, 246, 0.95);
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+}
+.avatar {
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(14, 17, 23);
+}
+.avatar .ms { font-size: 20px; color: rgb(14, 17, 23); }
+.avatar.assistant { background: rgb(255, 189, 69); }
+.avatar.user { background: rgb(255, 108, 108); }
+.chat-content {
+  flex: 1;
+  min-width: 0;
+  min-height: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #000;
+  overflow-wrap: anywhere;
+}
+.chat-content * { color: #000; }
+.chat-content a { color: rgb(0, 104, 201); }
+.chat-content .spinner { border-color: rgba(0, 0, 0, 0.15); border-top-color: #000; }
+
+.bottom {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 5;
+}
+.bottom-inner {
+  width: 100%;
+  max-width: 736px;
+  padding: 16px 16px 56px;
+}
+
+.chat-input {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 40px;
+  padding-left: 16px;
+  background: var(--secondary-bg);
+  border: 1px solid transparent;
+  border-radius: 20px;
+  transition: border-color 0.2s;
+}
+.chat-input:focus-within { border-color: var(--primary); }
+.chat-input textarea {
+  flex: 1;
+  min-width: 0;
+  height: 38px;
+  max-height: 200px;
+  padding: 8px 48px 8px 0;
+  border: 0;
+  outline: none;
+  resize: none;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 16px;
+  line-height: 22.4px;
+  overflow-y: hidden;
+}
+.chat-input textarea::placeholder, .text-field input::placeholder { color: rgba(250, 250, 250, 0.6); }
+.chat-send {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  border: 0;
+  border-radius: 0 20px 20px 0;
+  background: transparent;
+  color: rgb(163, 168, 184);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.chat-send svg { width: 18px; height: 18px; fill: currentColor; }
+.chat-send:disabled { cursor: not-allowed; }
+.chat-send:not(:disabled) { color: var(--text); }
+.chat-send:not(:disabled):hover { color: var(--primary); }
+
+/* ------------------------------------------------------------------------- */
+/* Mobilni i manji ekrani (ponašanje kao Streamlit)                          */
+/* ------------------------------------------------------------------------- */
+
+.sb-backdrop { display: none; }
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    transform: translateX(-100%);
+    box-shadow: none;
+  }
+  body.sidebar-open .sidebar { transform: none; box-shadow: 0 0 24px rgba(0, 0, 0, 0.5); }
+  body.sidebar-open .sb-backdrop { display: block; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.4); z-index: 19; }
+  .sb-collapse { opacity: 1; }
+  .sb-expand { display: block; }
+  body.sidebar-open .sb-expand { display: none; }
+  body.sidebar-collapsed .sidebar { margin-left: 0; }
+  .block { padding-top: 96px; }
+}
+
+@media (max-width: 640px) {
+  .columns { flex-direction: column; align-items: stretch; }
+  .columns.center { align-items: stretch; }
+  .col-1, .col-3, .columns.split-1-3 > .col-1, .columns.split-1-3 > .col-3 { flex: 1 1 auto; }
+  h1 { font-size: 36px; line-height: 44px; }
+  h2 { font-size: 30px; line-height: 36px; }
+  h3 { font-size: 24px; line-height: 30px; }
+  .bottom-inner { padding-bottom: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .main { scroll-behavior: auto; }
+  .sidebar, .spinner { transition: none; animation-duration: 2s; }
+}
