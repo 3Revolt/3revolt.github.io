@@ -81,12 +81,13 @@
       sending: "Šaljem vašu poruku🚀...", success_message: "Poruka je uspješno poslana!",
       error_message: "Došlo je do greške prilikom slanja poruke. Pokušajte kasnije ili pišite direktno na",
       form_disabled: "Kontakt forma je trenutno onemogućena (nije podešen email server). Možete pisati direktno na",
-      captcha_label: "Sigurnosna provjera: Koliko je", captcha_error: "Netačan rezultat. Molimo pokušajte ponovo.",
+      security_check: "Sigurnosna provjera", turnstile_wait: "Sačekajte da se sigurnosna provjera završi, pa pokušajte ponovo.",
+      turnstile_error: "Sigurnosna provjera nije uspjela. Osvježite stranicu i pokušajte ponovo.",
+      global_limit_error: "Kontakt forma je trenutno opterećena. Pokušajte ponovo za {wait}.",
       rate_limit_error: "Dostigli ste dnevni limit poruka. Pokušajte ponovo za {wait}.",
       cooldown_error: "Sačekajte {wait} prije slanja sljedeće poruke.",
       email_limit_error: "Previše poruka sa ove email adrese danas. Pokušajte ponovo za {wait}.",
       duplicate_error: "Ova poruka je već poslana. Hvala!",
-      locked_error: "Previše pogrešnih sigurnosnih odgovora. Forma je zaključana na {wait}.",
       chat_intro: "Pitajte me bilo šta o Amarovom iskustvu, vještinama ili obrazovanju.",
       chat_placeholder: "Upišite pitanje...", chat_thinking: "Razmišljam...",
       menu_open: "Otvori meni", menu_close: "Zatvori meni",
@@ -103,12 +104,13 @@
       sending: "Sending your message...", success_message: "Message sent successfully!",
       error_message: "An error occurred while sending the message. Please try again later or write directly to",
       form_disabled: "The contact form is currently disabled (email server is not configured). You can write directly to",
-      captcha_label: "Security Check: What is", captcha_error: "Incorrect calculation. Please try again.",
+      security_check: "Security Check", turnstile_wait: "Please wait for the security check to finish, then try again.",
+      turnstile_error: "The security check failed. Please refresh the page and try again.",
+      global_limit_error: "The contact form is temporarily busy. Please try again in {wait}.",
       rate_limit_error: "You have reached the daily message limit. Please try again in {wait}.",
       cooldown_error: "Please wait {wait} before sending another message.",
       email_limit_error: "Too many messages from this email address today. Please try again in {wait}.",
       duplicate_error: "This message has already been sent. Thank you!",
-      locked_error: "Too many incorrect security answers. The form is locked for {wait}.",
       chat_intro: "Ask me anything about Amar's experience, skills, or background.",
       chat_placeholder: "Type your question here...", chat_thinking: "Thinking...",
       menu_open: "Open menu", menu_close: "Close menu",
@@ -125,12 +127,13 @@
       sending: "Ihre Nachricht wird gesendet...", success_message: "Nachricht erfolgreich gesendet!",
       error_message: "Beim Senden der Nachricht ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut oder schreiben Sie direkt an",
       form_disabled: "Das Kontaktformular ist derzeit deaktiviert (kein E-Mail-Server konfiguriert). Sie können direkt schreiben an",
-      captcha_label: "Sicherheitsüberprüfung: Wie viel ist", captcha_error: "Falsches Ergebnis. Bitte versuchen Sie es erneut.",
+      security_check: "Sicherheitsüberprüfung", turnstile_wait: "Bitte warten Sie, bis die Sicherheitsüberprüfung abgeschlossen ist, und versuchen Sie es erneut.",
+      turnstile_error: "Die Sicherheitsüberprüfung ist fehlgeschlagen. Bitte laden Sie die Seite neu und versuchen Sie es erneut.",
+      global_limit_error: "Das Kontaktformular ist vorübergehend ausgelastet. Bitte versuchen Sie es in {wait} erneut.",
       rate_limit_error: "Sie haben das tägliche Nachrichtenlimit erreicht. Bitte versuchen Sie es in {wait} erneut.",
       cooldown_error: "Bitte warten Sie {wait}, bevor Sie eine weitere Nachricht senden.",
       email_limit_error: "Zu viele Nachrichten von dieser E-Mail-Adresse heute. Bitte versuchen Sie es in {wait} erneut.",
       duplicate_error: "Diese Nachricht wurde bereits gesendet. Vielen Dank!",
-      locked_error: "Zu viele falsche Sicherheitsantworten. Das Formular ist für {wait} gesperrt.",
       chat_intro: "Fragen Sie mich alles über Amars Erfahrung, Fähigkeiten oder Werdegang.",
       chat_placeholder: "Geben Sie Ihre Frage ein...", chat_thinking: "Denke nach...",
       menu_open: "Menü öffnen", menu_close: "Menü schließen",
@@ -299,89 +302,65 @@
   }
 
   // =========================================================================
-  // Kontakt forma (Web3Forms) sa zaštitom od spama
+  // Kontakt forma: Google Apps Script server + Cloudflare Turnstile
   // =========================================================================
+  // Prava zaštita (Turnstile provjera, limiti po email adresi, duplikati, globalni limit)
+  // radi na serveru (apps-script/Code.gs). Provjere ovdje služe samo za brzu povratnu informaciju.
 
   const MAX_NAME_LENGTH = 100;
   const MAX_MESSAGE_LENGTH = 3000;
   const MIN_FILL_SECONDS = 3;
-  const RULES = {
-    cooldown: 60, perDay: 5, perEmail: 3, day: 86400,
-    captchaFailures: 5, captchaWindow: 600, captchaLockout: 900,
-  };
+  const RULES = { cooldown: 60, perDay: 5, day: 86400 };
 
-  const formState = {
-    name: "", email: "", message: "", captcha: 0,
-    a: 0, b: 0, loadedAt: null, notice: null,
-  };
-  const newCaptcha = () => { formState.a = 1 + Math.floor(Math.random() * 10); formState.b = 1 + Math.floor(Math.random() * 10); };
-  newCaptcha();
+  const formState = { name: "", email: "", message: "", loadedAt: null, notice: null };
 
-  const hash = (s) => { let h = 0; for (const ch of s.trim().toLowerCase()) h = (Math.imul(31, h) + ch.codePointAt(0)) | 0; return String(h); };
   function formatWait(seconds) {
+    seconds = Math.max(1, Math.ceil(seconds));
     if (seconds < 60) return `${seconds} s`;
     if (seconds < 3600) return `${Math.ceil(seconds / 60)} min`;
     const h = Math.ceil(seconds / 3600);
     return language === "Deutsch" ? `${h} Std.` : `${h} h`;
   }
 
-  // Limiti se čuvaju u browseru (localStorage) - statički sajt nema server
-  function limiterData() {
+  // Pauza i dnevni limit u browseru (server ima svoje, strože limite)
+  function sentTimes() {
     const now = Date.now() / 1000;
-    const d = storage.get("contactLimiter", {}) || {};
-    const keep = (arr, period) => (arr || []).filter((x) => now - x < period);
-    return {
-      sent: keep(d.sent, RULES.day),
-      emails: Object.fromEntries(Object.entries(d.emails || {}).map(([k, v]) => [k, keep(v, RULES.day)]).filter(([, v]) => v.length)),
-      messages: Object.fromEntries(Object.entries(d.messages || {}).filter(([, v]) => now - v < RULES.day)),
-      captcha: keep(d.captcha, RULES.captchaWindow),
-      lockedUntil: d.lockedUntil && d.lockedUntil > now ? d.lockedUntil : 0,
-    };
+    return (storage.get("contactSent", []) || []).filter((x) => now - x < RULES.day);
   }
-  const saveLimiter = (d) => storage.set("contactLimiter", d);
-
-  function checkLimits(email, message) {
+  function checkLocalLimits() {
     const now = Date.now() / 1000;
-    const d = limiterData();
-    if (d.lockedUntil) return ["locked", Math.ceil(d.lockedUntil - now)];
-    if (email === undefined) return [null, 0];
-    if (d.sent.length && now - Math.max(...d.sent) < RULES.cooldown) return ["cooldown", Math.ceil(RULES.cooldown - (now - Math.max(...d.sent)))];
-    if (d.sent.length >= RULES.perDay) return ["rate", Math.ceil(Math.min(...d.sent) + RULES.day - now)];
-    const em = d.emails[hash(email)] || [];
-    if (em.length >= RULES.perEmail) return ["email", Math.ceil(Math.min(...em) + RULES.day - now)];
-    if (d.messages[hash(message)]) return ["duplicate", 0];
+    const sent = sentTimes();
+    if (sent.length && now - Math.max(...sent) < RULES.cooldown) return ["cooldown_error", RULES.cooldown - (now - Math.max(...sent))];
+    if (sent.length >= RULES.perDay) return ["rate_limit_error", Math.min(...sent) + RULES.day - now];
     return [null, 0];
   }
+  const recordSent = () => storage.set("contactSent", [...sentTimes(), Date.now() / 1000]);
 
-  function recordSent(email, message) {
-    const now = Date.now() / 1000;
-    const d = limiterData();
-    d.sent.push(now);
-    (d.emails[hash(email)] = d.emails[hash(email)] || []).push(now);
-    d.messages[hash(message)] = now;
-    d.captcha = [];
-    saveLimiter(d);
-  }
+  const isValidEmail = (email) => /^[^@\s]+@[^@\s.]+(\.[^@\s.]+)+$/.test(email) && email.length <= 254;
 
-  function recordCaptchaFailure() {
-    const now = Date.now() / 1000;
-    const d = limiterData();
-    d.captcha.push(now);
-    let locked = false;
-    if (d.captcha.length >= RULES.captchaFailures) { d.lockedUntil = now + RULES.captchaLockout; d.captcha = []; locked = true; }
-    saveLimiter(d);
-    return locked;
-  }
-
-  function isValidEmail(email) {
-    return /^[^@\s]+@[^@\s.]+(\.[^@\s.]+)+$/.test(email) && email.length <= 254;
+  // Cloudflare Turnstile se učitava tek kad se prikaže forma
+  let turnstileLoading = null;
+  function loadTurnstile() {
+    if (window.turnstile) return Promise.resolve(window.turnstile);
+    if (!turnstileLoading) {
+      turnstileLoading = new Promise((resolve, reject) => {
+        window.onTurnstileLoad = () => resolve(window.turnstile);
+        const script = document.createElement("script");
+        script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=onTurnstileLoad";
+        script.async = true;
+        script.onerror = () => { turnstileLoading = null; reject(new Error("Turnstile se nije učitao")); };
+        document.head.appendChild(script);
+      });
+    }
+    return turnstileLoading;
   }
 
   function renderContactForm(container) {
-    if (!CONFIG.web3formsKey) {
+    if (!CONFIG.contactEndpoint || !CONFIG.turnstileSiteKey) {
       container.innerHTML = `<div class="alert alert-info"><p>${esc(t("form_disabled"))} <strong>${esc(CV.personal.email)}</strong>.</p></div>`;
       return;
     }
+    if (!formState.loadedAt) formState.loadedAt = Date.now(); // mjeri se od prvog prikaza forme
     container.innerHTML = `
       <div class="widget"><label class="widget-label" for="cfName">${esc(t("your_name"))}</label>
         <div class="text-field"><input id="cfName" type="text" autocomplete="name" maxlength="200"></div></div>
@@ -390,37 +369,38 @@
       <div class="widget"><label class="widget-label" for="cfMessage">${esc(t("your_message"))}</label>
         <div class="text-field"><textarea id="cfMessage"></textarea></div></div>
       <div class="honeypot" aria-hidden="true"><label>Website<input id="cfWebsite" type="text" tabindex="-1" autocomplete="off"></label></div>
-      <div class="widget"><label class="widget-label" for="cfCaptcha" id="cfCaptchaLabel"></label>
-        <div class="text-field number-field">
-          <input id="cfCaptcha" type="number" min="0" max="100" step="1" inputmode="numeric">
-          <button class="step-btn" type="button" data-step="-1" aria-label="-"><span class="ms">remove</span></button>
-          <button class="step-btn" type="button" data-step="1" aria-label="+"><span class="ms">add</span></button>
-        </div></div>
+      <div class="widget"><span class="widget-label">${esc(t("security_check"))}</span><div class="turnstile-box" id="cfTurnstile"></div></div>
       <div><button class="st-btn" type="button" id="cfSend">${esc(t("send"))}</button></div>
       <div id="cfNotice" style="display:contents"></div>
     `;
-    if (!formState.loadedAt) formState.loadedAt = Date.now(); // mjeri se od prvog prikaza forme
     const name = $("#cfName", container), email = $("#cfEmail", container), message = $("#cfMessage", container);
-    const captcha = $("#cfCaptcha", container), sendBtn = $("#cfSend", container), notice = $("#cfNotice", container);
-    name.value = formState.name; email.value = formState.email; message.value = formState.message; captcha.value = formState.captcha;
-    const updateCaptchaLabel = () => { $("#cfCaptchaLabel", container).textContent = `${t("captcha_label")} ${formState.a} + ${formState.b}?`; };
-    const updateSteps = () => {
-      const v = Number(captcha.value) || 0;
-      container.querySelector('[data-step="-1"]').disabled = v <= 0;
-      container.querySelector('[data-step="1"]').disabled = v >= 100;
-    };
-    updateCaptchaLabel(); updateSteps();
+    const sendBtn = $("#cfSend", container), notice = $("#cfNotice", container);
+    name.value = formState.name; email.value = formState.email; message.value = formState.message;
     name.addEventListener("input", () => { formState.name = name.value; });
     email.addEventListener("input", () => { formState.email = email.value; });
     message.addEventListener("input", () => { formState.message = message.value; });
-    captcha.addEventListener("input", () => { formState.captcha = captcha.value; updateSteps(); });
-    container.querySelectorAll(".step-btn").forEach((b) => b.addEventListener("click", () => {
-      const v = Math.min(100, Math.max(0, (Number(captcha.value) || 0) + Number(b.dataset.step)));
-      captcha.value = v; formState.captcha = v; updateSteps();
-    }));
 
     const show = (kind, html) => { formState.notice = kind ? { kind, html } : null; notice.innerHTML = kind ? `<div class="alert alert-${kind}"><p>${html}</p></div>` : ""; };
     if (formState.notice) show(formState.notice.kind, formState.notice.html);
+
+    // Turnstile widget
+    let token = "";
+    let widgetId = null;
+    const resetTurnstile = () => { token = ""; if (widgetId !== null && window.turnstile) window.turnstile.reset(widgetId); };
+    loadTurnstile().then((ts) => {
+      const box = $("#cfTurnstile", container);
+      if (!box || !document.body.contains(box)) return;
+      widgetId = ts.render(box, {
+        sitekey: CONFIG.turnstileSiteKey,
+        theme: "dark",
+        size: "flexible",
+        language: { Bosanski: "hr", English: "en", Deutsch: "de" }[language],
+        action: "contact",
+        callback: (value) => { token = value; },
+        "expired-callback": () => { token = ""; },
+        "error-callback": () => { token = ""; },
+      });
+    }).catch(() => show("error", esc(t("turnstile_error"))));
 
     sendBtn.addEventListener("click", async () => {
       const n = name.value.trim(), e = email.value.trim(), m = message.value.trim();
@@ -436,50 +416,42 @@
       if (/https?:\/\/|www\./i.test(n)) { show("error", esc(t("error_links_in_name"))); return; }
       if (!isValidEmail(e)) { show("error", esc(t("error_email"))); return; }
 
-      // 2. Zaključavanje nakon previše pogrešnih captcha odgovora + captcha
-      let [reason, wait] = checkLimits();
-      if (reason === "locked") { show("error", esc(t("locked_error").replace("{wait}", formatWait(wait)))); return; }
-      if (Number(captcha.value) !== formState.a + formState.b) {
-        if (recordCaptchaFailure()) show("error", esc(t("locked_error").replace("{wait}", formatWait(RULES.captchaLockout))));
-        else show("error", esc(t("captcha_error")));
-        newCaptcha(); updateCaptchaLabel();
-        return;
-      }
+      // 2. Sigurnosna provjera (Turnstile)
+      if (!token) { show("error", esc(t("turnstile_wait"))); return; }
 
-      // 3. Limiti (pauza, dnevni limit, ista email adresa, duplikat)
-      [reason, wait] = checkLimits(e, m);
-      if (reason) {
-        const key = { cooldown: "cooldown_error", rate: "rate_limit_error", email: "email_limit_error", duplicate: "duplicate_error" }[reason];
-        show(reason === "duplicate" ? "info" : "error", esc(t(key).replace("{wait}", formatWait(wait))));
-        return;
-      }
+      // 3. Pauza i dnevni limit
+      const [limitKey, wait] = checkLocalLimits();
+      if (limitKey) { show("error", esc(t(limitKey).replace("{wait}", formatWait(wait)))); return; }
 
-      // 4. Slanje
+      // 4. Slanje na server
       sendBtn.disabled = true;
       notice.innerHTML = `<div class="spinner-row"><div class="spinner"></div><span>${esc(t("sending"))}</span></div>`;
       try {
-        const response = await fetch("https://api.web3forms.com/submit", {
+        const response = await fetch(CONFIG.contactEndpoint, {
           method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({
-            access_key: CONFIG.web3formsKey,
-            subject: `Message from CV Website - ${n}`,
-            from_name: "CV Website",
-            name: n, email: e, message: m, language,
-            botcheck: "",
-          }),
+          // text/plain = "jednostavan" zahtjev, Google Apps Script ga prima bez dodatnog CORS koraka
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ name: n, email: e, message: m, language, token, website: "" }),
         });
-        const result = await response.json().catch(() => ({}));
-        if (!response.ok || !result.success) throw new Error(result.message || response.status);
-        recordSent(e, m);
-        Object.assign(formState, { name: "", email: "", message: "", captcha: 0, loadedAt: Date.now() });
-        newCaptcha();
+        const result = await response.json().catch(() => ({ success: false, code: "server" }));
+        if (!result.success) {
+          const key = {
+            invalid: "error_fields", turnstile: "turnstile_error", email_limit: "email_limit_error",
+            duplicate: "duplicate_error", global_limit: "global_limit_error",
+          }[result.code];
+          resetTurnstile();
+          if (result.code === "duplicate") { show("info", esc(t(key))); return; }
+          if (key) { show("error", esc(t(key).replace("{wait}", formatWait(result.retryAfter || 3600)))); return; }
+          throw new Error(result.code || "server");
+        }
+        recordSent();
+        Object.assign(formState, { name: "", email: "", message: "", loadedAt: Date.now() });
         renderContactForm(container);
-        const fresh = $("#cfNotice", container);
         formState.notice = null;
-        fresh.innerHTML = `<div class="alert alert-success"><p>${esc(t("success_message"))}</p></div>`;
+        $("#cfNotice", container).innerHTML = `<div class="alert alert-success"><p>${esc(t("success_message"))}</p></div>`;
       } catch (err) {
         console.error("Slanje poruke nije uspjelo:", err);
+        resetTurnstile();
         show("error", `${esc(t("error_message"))} <strong>${esc(CV.personal.email)}</strong>.`);
       } finally {
         sendBtn.disabled = false;

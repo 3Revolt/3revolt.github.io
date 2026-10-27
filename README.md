@@ -20,7 +20,8 @@ Izgled je preuzet 1:1 sa Streamlit verzije ([Multipage](https://github.com/3Revo
 | `js/app.js` | navigacija, jezici, stranice, chat i kontakt forma |
 | `js/chatbot.js` | chatbot engine (prijevod `chatbot_engine.py` iz Multipage projekta) |
 | `js/cv-data.js` | CV podaci i tabele chatbota, **generisano automatski** |
-| `js/config.js` | ključ za kontakt formu (Web3Forms) |
+| `js/config.js` | adresa servera za kontakt formu i Turnstile Site Key (javni podaci) |
+| `apps-script/Code.gs` | server za kontakt formu (Google Apps Script) |
 | `tools/export_data.py` | generiše `js/cv-data.js` iz Multipage projekta |
 
 ## Izmjena CV podataka
@@ -33,12 +34,18 @@ python tools/export_data.py ../Multipage
 
 ## Kontakt forma
 
-Forma šalje poruke preko besplatnog servisa [Web3Forms](https://web3forms.com).
-Na web3forms.com upiši svoj email, ključ stiže na mail, a ti ga upišeš u `js/config.js` (`web3formsKey`).
-Dok je ključ prazan, forma prikazuje poruku da je onemogućena, uz email adresu.
+Forma šalje poruke na vlastiti besplatni server: **Google Apps Script** (`apps-script/Code.gs`),
+uz zaštitu **Cloudflare Turnstile**.
 
-Zaštita od spama: captcha, skriveno polje za botove, provjera prebrzog slanja, pauza od 60 s između poruka,
-najviše 5 poruka dnevno, 3 sa iste email adrese, blokada iste poruke i zaključavanje nakon 5 pogrešnih captcha odgovora.
+- Tebi stiže poruka (Reply-To je posjetilac), a posjetiocu automatski odgovor na njegovom jeziku
+- Sve provjere rade na serveru: Turnstile token (samo sa dozvoljenih domena), skriveno polje za botove,
+  najviše 3 poruke dnevno sa iste adrese, blokada iste poruke, najviše 1 auto-reply dnevno po adresi
+  i globalni limit od 10 poruka na sat i 40 dnevno
+- `js/config.js` sadrži samo javne vrijednosti: Web app URL i Turnstile Site Key.
+  **Secret Key je samo u Apps Script postavkama** (Script Properties: `TURNSTILE_SECRET`, `NOTIFY_EMAIL`)
+
+Nakon izmjene `Code.gs`: zalijepi novi kod u Apps Script, pa **Deploy → Manage deployments → ✏️ → Version: New version → Deploy**
+(URL ostaje isti).
 
 ## Lokalno pokretanje
 
