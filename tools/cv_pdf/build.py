@@ -123,7 +123,8 @@ def build(lang):
   * {{ box-sizing: border-box; }}
   html, body {{ margin: 0; padding: 0; background: #e5e7eb; }}
   body {{ font-family: "Montserrat", sans-serif; color: var(--text); font-size: 8.5pt; line-height: 1.42;
-         -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
+         -webkit-print-color-adjust: exact; print-color-adjust: exact;
+         font-variant-ligatures: none; font-feature-settings: "liga" 0, "clig" 0; }}  /* bez ligatura: ATS čita "fi" kao dva slova */
   .page {{ position: relative; width: 210mm; height: 297mm; overflow: hidden; background: #fff; margin: 0 auto 8mm; page-break-after: always; }}
   .page:last-child {{ page-break-after: auto; }}
   @media print {{ html, body {{ background: #fff; }} .page {{ margin: 0; }} }}
