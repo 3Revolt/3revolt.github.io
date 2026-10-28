@@ -12,7 +12,7 @@
  *   - provjera dužine polja, ispravnosti emaila i linkova u imenu
  *   - najviše 3 poruke dnevno sa iste email adrese
  *   - ista poruka se ne može poslati dvaput u 24h
- *   - najviše 1 automatski odgovor dnevno na istu adresu (zaštita od "backscatter" zloupotrebe)
+ *   - najviše 3 automatska odgovora dnevno na istu adresu (zaštita od "backscatter" zloupotrebe)
  *   - globalni limit: 10 poruka na sat, 40 dnevno (Gmail dozvoljava ~100 mailova dnevno)
  *
  * Podešavanja (Project Settings -> Script Properties), NE u kodu:
@@ -23,7 +23,7 @@
 
 var LIMITS = {
   perEmailPerDay: 3,
-  autoReplyPerEmailPerDay: 1,
+  autoReplyPerEmailPerDay: 3,
   globalPerHour: 10,
   globalPerDay: 40,
   duplicateWindowSeconds: 86400,
@@ -37,15 +37,15 @@ var DEFAULT_ALLOWED_HOSTNAMES = ['3revolt.github.io', 'amarhelac.is-a.dev'];
 var AUTO_REPLY = {
   Bosanski: {
     subject: 'Hvala na poruci – Amar Helać',
-    body: 'Hvala Vam što ste me kontaktirali. Javiću Vam se što prije.\n\nSrdačan pozdrav,\nAmar Helać\nhttps://amarhelac.is-a.dev'
+    body: 'Hvala Vam što ste me kontaktirali. Javiću Vam se što prije.\n\nSrdačan pozdrav,\nAmar Helać'
   },
   English: {
     subject: 'Thank you for your message – Amar Helać',
-    body: 'Thank you for contacting me. I will get back to you as soon as possible.\n\nKind regards,\nAmar Helać\nhttps://amarhelac.is-a.dev'
+    body: 'Thank you for contacting me. I will get back to you as soon as possible.\n\nKind regards,\nAmar Helać'
   },
   Deutsch: {
     subject: 'Vielen Dank für Ihre Nachricht – Amar Helać',
-    body: 'Vielen Dank für Ihre Kontaktaufnahme. Ich melde mich so schnell wie möglich bei Ihnen.\n\nMit freundlichen Grüßen\nAmar Helać\nhttps://amarhelac.is-a.dev'
+    body: 'Vielen Dank für Ihre Kontaktaufnahme. Ich melde mich so schnell wie möglich bei Ihnen.\n\nMit freundlichen Grüßen\nAmar Helać'
   }
 };
 
@@ -200,9 +200,9 @@ function notificationHtml_(name, email, language, message, sentAt, autoReplySent
 }
 
 var AUTO_REPLY_HTML = {
-  Bosanski: { title: 'Hvala na poruci! 🙏', text: 'Hvala Vam što ste me kontaktirali. Javiću Vam se što prije.', button: 'Posjetite moj CV', regards: 'Srdačan pozdrav,', role: 'IT Specijalista | Podrška i automatizacija', note: 'Ovo je automatski odgovor.' },
-  English: { title: 'Thank you for your message! 🙏', text: 'Thank you for contacting me. I will get back to you as soon as possible.', button: 'Visit my CV', regards: 'Kind regards,', role: 'IT Specialist | Support & Automation', note: 'This is an automatic reply.' },
-  Deutsch: { title: 'Vielen Dank für Ihre Nachricht! 🙏', text: 'Vielen Dank für Ihre Kontaktaufnahme. Ich melde mich so schnell wie möglich bei Ihnen.', button: 'Zu meinem Lebenslauf', regards: 'Mit freundlichen Grüßen', role: 'IT-Spezialist | Support & Automatisierung', note: 'Dies ist eine automatische Antwort.' }
+  Bosanski: { title: 'Hvala na poruci! 🙏', text: 'Hvala Vam što ste me kontaktirali. Javiću Vam se što prije.', button: 'Posjetite moj CV', regards: 'Srdačan pozdrav,', note: 'Ovo je automatski odgovor.' },
+  English: { title: 'Thank you for your message! 🙏', text: 'Thank you for contacting me. I will get back to you as soon as possible.', button: 'Visit my CV', regards: 'Kind regards,', note: 'This is an automatic reply.' },
+  Deutsch: { title: 'Vielen Dank für Ihre Nachricht! 🙏', text: 'Vielen Dank für Ihre Kontaktaufnahme. Ich melde mich so schnell wie möglich bei Ihnen.', button: 'Zu meinem Lebenslauf', regards: 'Mit freundlichen Grüßen', note: 'Dies ist eine automatische Antwort.' }
 };
 
 function autoReplyHtml_(language) {
@@ -211,8 +211,7 @@ function autoReplyHtml_(language) {
     '<p style="margin:0 0 22px;font-size:16px;">' + t.text + '</p>' +
     '<a href="' + SITE_URL + '" style="display:inline-block;background:' + COLORS.accent + ';color:#ffffff;text-decoration:none;font-weight:600;padding:11px 22px;border-radius:8px;">' + t.button + ' →</a>' +
     '<p style="margin:26px 0 0;">' + t.regards + '</p>' +
-    '<p style="margin:4px 0 0;font-weight:700;font-size:16px;">Amar Helać</p>' +
-    '<p style="margin:2px 0 0;color:' + COLORS.muted + ';font-size:14px;">' + t.role + '</p>';
+    '<p style="margin:4px 0 0;font-weight:700;font-size:16px;">Amar Helać</p>';
   return emailShell_(t.title, inner, t.note);
 }
 
