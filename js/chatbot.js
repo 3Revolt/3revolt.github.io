@@ -41,7 +41,7 @@
   }
 
   const skillCategoryLine = (c, lang) => `● **${tr(c.name, lang)}:** ${c.items[lang].join(", ")}.`;
-  const projectLine = (p, lang) => `${p.emoji} **${p.name}:** ${p.description[lang]}`;
+  const projectLine = (p, lang) => `${p.emoji} **${tr(p.name, lang)}:** ${p.description[lang]}`;
 
   function educationLines(lang) {
     const sep = lang === "de" ? " – " : " - ";
@@ -643,19 +643,19 @@
       `- **Automatizacija** – pišem skripte i koristim alate za automatizaciju, plus AI integracije (Gemini API, Ollama)\n` +
       `- **Širina** – telekom, bankarski POS/ATM, ERP, javni sektor, web razvoj (React)\n` +
       `- **Komunikacija** – godine rada direktno sa korisnicima, pisanje dokumentacije i procedura\n` +
-      `- **Brzo učenje** – samostalno sam izgradio lokalni AI lab i AI help desk sistem`,
+      `- **Brzo učenje** – samostalno sam razvio Help Desk sistem sa AI integracijom i lokalnu AI laboratoriju`,
       `What I bring to a team:\n\n` +
       `- **${years}+ years of hands-on work** – from user support to system administration (Active Directory, networks, servers, security)\n` +
       `- **Automation** – I write scripts and use automation tools, plus AI integrations (Gemini API, Ollama)\n` +
       `- **Breadth** – telecom, banking POS/ATM, ERP, public sector, web development (React)\n` +
       `- **Communication** – years of working directly with users, writing documentation and procedures\n` +
-      `- **Fast learner** – I independently built a local AI lab and an AI help desk system`,
+      `- **Fast learner** – I independently developed a help desk system with AI integration and a local AI lab`,
       `Was ich einem Team biete:\n\n` +
       `- **${years}+ Jahre Praxis** – vom Benutzersupport bis zur Systemadministration (Active Directory, Netzwerke, Server, Sicherheit)\n` +
       `- **Automatisierung** – ich schreibe Skripte und nutze Automatisierungstools, dazu KI-Integrationen (Gemini API, Ollama)\n` +
       `- **Bandbreite** – Telekom, Bank-POS/ATM, ERP, öffentlicher Sektor, Webentwicklung (React)\n` +
       `- **Kommunikation** – jahrelange direkte Arbeit mit Benutzern, Erstellung von Dokumentationen und Verfahren\n` +
-      `- **Schnelle Auffassungsgabe** – ich habe selbstständig ein lokales KI-Labor und ein KI-Help-Desk-System aufgebaut`);
+      `- **Schnelle Auffassungsgabe** – ich habe selbstständig ein Help-Desk-System mit KI-Integration und ein lokales KI-Labor entwickelt`);
   };
 
   A.salary = (lang) => L(lang, "Plata i uslovi su stvar dogovora i zavise od pozicije. ", "Salary and conditions are negotiable and depend on the position. ",
@@ -676,11 +676,11 @@
 
   A.goals = (lang) => L(lang,
     "Moj fokus je unapređenje IT procesa kroz **DevOps prakse** i **AI automatizaciju**. Cilj mi je da od klasične podrške i administracije " +
-    "pređem na poziciju gdje gradim automatizovane sisteme – kao što je moj AI Help Desk sa Gemini API-jem ili lokalni LLM lab sa Ollamom.",
+    "pređem na poziciju gdje gradim automatizovane sisteme – kao što je moj Help Desk sistem sa integrisanom AI funkcijom (Gemini API) ili lokalna LLM laboratorija sa Ollamom.",
     "My focus is improving IT workflows through **DevOps practices** and **AI automation**. My goal is to move from classic support and administration " +
-    "to a role where I build automated systems – like my AI Help Desk with Gemini API or my local LLM lab with Ollama.",
+    "to a role where I build automated systems – like my help desk system with integrated AI (Gemini API) or my local LLM lab with Ollama.",
     "Mein Fokus liegt auf der Optimierung von IT-Abläufen durch **DevOps-Praktiken** und **KI-Automatisierung**. Mein Ziel ist es, vom klassischen Support " +
-    "und der Administration in eine Rolle zu wechseln, in der ich automatisierte Systeme aufbaue – wie mein KI-Help-Desk mit Gemini API oder mein lokales LLM-Labor mit Ollama.");
+    "und der Administration in eine Rolle zu wechseln, in der ich automatisierte Systeme aufbaue – wie mein Help-Desk-System mit integrierter KI (Gemini API) oder mein lokales LLM-Labor mit Ollama.");
 
   A.cv_download = (lang) => L(lang,
     "CV možete preuzeti kao PDF klikom na dugme **⬇️ Preuzmite CV** na stranici **[O meni](/)** – dostupan je na bosanskom, engleskom i njemačkom (prema izabranom jeziku).",
@@ -810,7 +810,7 @@
 
   const DOCUMENTS = [];
   for (const job of JOBS) job.duties.en.forEach((_, i) => DOCUMENTS.push([Object.fromEntries(LANGS.map((lg) => [lg, job.duties[lg][i]])), ["job", job.id]]));
-  for (const p of CV.projects) DOCUMENTS.push([Object.fromEntries(LANGS.map((lg) => [lg, `${p.name}: ${p.description[lg]}`])), ["project", p.id]]);
+  for (const p of CV.projects) DOCUMENTS.push([Object.fromEntries(LANGS.map((lg) => [lg, `${tr(p.name, lg)}: ${p.description[lg]}`])), ["project", p.id]]);
   for (const c of CV.skillCategories) DOCUMENTS.push([Object.fromEntries(LANGS.map((lg) => [lg, skillCategoryLine(c, lg)])), ["skills", c.id]]);
   DOCUMENTS.push([Object.fromEntries(LANGS.map((lg) => [lg, CV.personal.description[lg]])), ["about", null]]);
   DOCUMENTS.push([Object.fromEntries(LANGS.map((lg) => [lg, educationLines(lg).join(" ")])), ["education", null]]);
