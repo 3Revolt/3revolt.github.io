@@ -521,6 +521,32 @@ h3 { font-size: 28px; font-weight: 600; line-height: 33.6px; padding: 12px 0 16p
 .chat-send:not(:disabled):hover { color: var(--primary); }
 
 /* ------------------------------------------------------------------------- */
+/* Čitljivost preko pozadina (pozadine ostaju iste, slova dobijaju tamni obrub) */
+/* ------------------------------------------------------------------------- */
+
+/* Sidebar: zelena slova i ikone sa crnim obrubom - čitljivo i na dnevnim i na noćnim kadrovima animacije */
+.sidebar .sb-sec, .sidebar .sb-link, .sidebar .sb-link *, .sidebar .widget-label,
+.sidebar .select-value, .sidebar .select-chevron, .sidebar .sb-caption, .sidebar .sb-collapse .ms {
+  text-shadow:
+    -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000,
+    0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000, 1px 0 0 #000,
+    0 0 4px rgba(0, 0, 0, 0.95), 0 0 8px rgba(0, 0, 0, 0.7);
+}
+.sidebar .sb-sec, .sidebar .widget-label { font-weight: 600; }
+
+/* Glavni sadržaj: bijeli tekst sa tamnom sjenom - čitljiv i preko svijetlih dijelova slika */
+.block, .bottom-inner {
+  text-shadow:
+    0 0 2px rgba(0, 0, 0, 0.95), 0 1px 3px rgba(0, 0, 0, 0.95),
+    0 0 8px rgba(0, 0, 0, 0.8), 0 0 16px rgba(0, 0, 0, 0.5);
+}
+.block a { color: rgb(120, 190, 255); text-shadow: 0 0 2px #000, 0 0 3px #000, 0 1px 4px #000, 0 0 10px rgba(0, 0, 0, 0.9); }
+.chat-content a { color: rgb(0, 104, 201); }
+/* Elementi sa vlastitom pozadinom ostaju bez sjene */
+.chat-message, .chat-message *, .text-field, .text-field *, .chat-input, .chat-input *,
+.col img, .html-btn, .turnstile-box, .turnstile-box * { text-shadow: none; }
+
+/* ------------------------------------------------------------------------- */
 /* Mobilni i manji ekrani (ponašanje kao Streamlit)                          */
 /* ------------------------------------------------------------------------- */
 
