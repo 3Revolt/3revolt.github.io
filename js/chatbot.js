@@ -388,10 +388,25 @@
 
   A.name = (lang) => L(lang, `Zovem se **${CV.personal.name}**. 😊`, `My name is **${CV.personal.name}**. 😊`, `Mein Name ist **${CV.personal.name}**. 😊`);
 
-  A.age = (lang) => L(lang,
-    "Datum rođenja nije naveden u CV-u. Mogu reći da imam preko 10 godina radnog iskustva (od 2014.) i srednju školu završenu 2012. godine. ",
-    "My date of birth isn't listed in the CV. I can tell you that I have over 10 years of work experience (since 2014) and finished secondary school in 2012. ",
-    "Mein Geburtsdatum steht nicht im Lebenslauf. Ich kann Ihnen sagen, dass ich über 10 Jahre Berufserfahrung habe (seit 2014) und die Mittelschule 2012 abgeschlossen habe. ") + contactHint(lang);
+  function bsYearsWord(n) {
+    if (n % 10 === 1 && n !== 11) return "godina";
+    if (n % 10 >= 2 && n % 10 <= 4 && !(n >= 12 && n <= 14)) return "godine";
+    return "godina";
+  }
+  function currentAge() {
+    const [day, month, year] = CV.personal.birth_date.split(".").map(Number);
+    const d = new Date();
+    const m = d.getMonth() + 1, dd = d.getDate();
+    return d.getFullYear() - year - ((m < month || (m === month && dd < day)) ? 1 : 0);
+  }
+
+  A.age = (lang) => {
+    const birth = CV.personal.birth_date, age = currentAge();
+    return L(lang,
+      `Rođen sam **${birth}** (${age} ${bsYearsWord(age)}). Imam preko 10 godina radnog iskustva, od 2014. godine.`,
+      `I was born on **${birth}** (${age} years old). I have over 10 years of work experience, since 2014.`,
+      `Ich bin am **${birth}** geboren (${age} Jahre alt). Ich habe über 10 Jahre Berufserfahrung, seit 2014.`);
+  };
 
   A.personal = (lang) => L(lang,
     "To je privatna tema koju ne pokriva moj CV – ovdje se fokusiram na profesionalno iskustvo. 🙂 Pitajte me slobodno o poslu, vještinama ili projektima.",
@@ -418,11 +433,11 @@
   };
 
   A.phone = (lang) => {
-    const email = CV.personal.email;
+    const email = CV.personal.email, phone = CV.personal.phone;
     return L(lang,
-      `Broj telefona nije javno objavljen na ovom sajtu. Pišite mi na **${email}** ili putem **[kontakt forme](/#contact-me)** i rado ću vam poslati broj ili se javiti.`,
-      `My phone number isn't published on this site. Write to **${email}** or use the **[contact form](/#contact-me)** and I'll gladly share it or call you back.`,
-      `Meine Telefonnummer ist auf dieser Seite nicht veröffentlicht. Schreiben Sie an **${email}** oder nutzen Sie das **[Kontaktformular](/#contact-me)** – ich melde mich gerne.`);
+      `Moj broj telefona je **${phone}**. Možete mi pisati i na **${email}** ili putem **[kontakt forme](/#contact-me)**.`,
+      `My phone number is **${phone}**. You can also write to **${email}** or use the **[contact form](/#contact-me)**.`,
+      `Meine Telefonnummer ist **${phone}**. Sie können mir auch an **${email}** schreiben oder das **[Kontaktformular](/#contact-me)** nutzen.`);
   };
 
   A.social = (lang) => L(lang,

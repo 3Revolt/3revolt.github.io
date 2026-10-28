@@ -4,6 +4,14 @@ window.CV_DATA = {
  "personal": {
   "name": "Amar Helać",
   "email": "hela3292@hotmail.com",
+  "phone": "+387 61 511 227",
+  "birth_date": "03.02.1992",
+  "website": "amarhelac.is-a.dev",
+  "city": {
+   "bs": "Sarajevo, BiH",
+   "en": "Sarajevo, Bosnia and Herzegovina",
+   "de": "Sarajevo, Bosnien und Herzegowina"
+  },
   "location": {
    "bs": "Sarajevo, Bosna i Hercegovina",
    "en": "Sarajevo, Bosnia and Herzegovina",
@@ -235,7 +243,7 @@ window.CV_DATA = {
      "Photoshop",
      "Joomla (K2)",
      "3D-Modellierung (Rodin-3D, ComfyUI, .glb)",
-     "QA-Handbuchkurs"
+     "Kurs für manuelles Testen (QA)"
     ]
    }
   }
@@ -341,7 +349,7 @@ window.CV_DATA = {
     "QA Manual course (manual software testing)"
    ],
    "de": [
-    "QA-Handbuchkurs (manuelles Softwaretesten)"
+    "Kurs für manuelles Softwaretesten (QA)"
    ]
   }
  },

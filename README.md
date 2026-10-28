@@ -32,6 +32,18 @@ Podaci se mijenjaju na jednom mjestu, u `Multipage/cv_data.py`. Nakon toga pokre
 python tools/export_data.py ../Multipage
 ```
 
+## CV u PDF-u
+
+PDF-ovi za preuzimanje (`assets/CVbos.pdf`, `CVeng.pdf`, `CVde.pdf`) generišu se iz istih podataka kao sajt:
+
+```bash
+python tools/cv_pdf/build.py ../Multipage
+```
+
+To napravi `tools/cv_pdf/out/cv-bs.html`, `cv-en.html` i `cv-de.html`. Otvori ih u Chromeu → **Print** →
+**Save as PDF** (Margins: *None*, Background graphics: *uključeno*) i sačuvaj preko starih PDF-ova
+(i u `Multipage/assets/`, za Streamlit verziju).
+
 ## Kontakt forma
 
 Forma šalje poruke na vlastiti besplatni server: **Google Apps Script** (`apps-script/Code.gs`),
