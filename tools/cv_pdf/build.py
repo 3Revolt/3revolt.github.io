@@ -35,12 +35,6 @@ LABELS = {
            "online": "Online-CV & Chatbot", "scan": "Scannen für den interaktiven Lebenslauf", "born": "Geburtsdatum", "course": "Kurs"},
 }
 
-# Opšte stavke koje ne govore ništa konkretno - izostavljaju se iz PDF-a (na sajtu ostaju)
-GENERIC_EN = ("Responsibility for timely", "Other activities", "Performing other tasks")
-# Stariji poslovi: prikazuje se samo nekoliko ključnih stavki
-OLDER_JOB_ITEMS = 3
-OLDER_THAN_YEAR = 2020
-
 ICONS = {
     "phone": '<path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1-9.4 0-17-7.6-17-17 0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1L6.6 10.8z"/>',
     "mail": '<path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/>',
@@ -71,15 +65,8 @@ def bold_md(text):
 
 
 def job_block(job, lang):
-    duties = [d for d, en in zip(job["duties"][lang], job["duties"]["en"]) if not en.startswith(GENERIC_EN)]
-    if job["start"][0] < 2019:      # 2014-2018: dvije ključne stavke
-        duties = duties[:2]
-    elif job["start"][0] < OLDER_THAN_YEAR:
-        duties = duties[:OLDER_JOB_ITEMS]
-    elif job["start"][0] < 2021:      # 2020: najviše 6 stavki
-        duties = duties[:6]
-    elif job["end"] is not None:      # raniji poslovi od 2021: najviše 8 stavki
-        duties = duties[:8]
+    # Sve stavke iz CV-a, za svaki posao (jasno se vidi šta je rađeno)
+    duties = job["duties"][lang]
     company = cv.tr(job["company_name"], lang)
     items = "".join(f"<li>{e(d)}</li>" for d in duties)
     return (f'<div class="block job" data-split="1">'
@@ -135,7 +122,7 @@ def build(lang):
   :root {{ --navy: #263445; --navy-2: #2f3c4f; --text: #1f2933; --muted: #5b6573; --accent: #3a6ea5; }}
   * {{ box-sizing: border-box; }}
   html, body {{ margin: 0; padding: 0; background: #e5e7eb; }}
-  body {{ font-family: "Montserrat", sans-serif; color: var(--text); font-size: 8.3pt; line-height: 1.38;
+  body {{ font-family: "Montserrat", sans-serif; color: var(--text); font-size: 8.5pt; line-height: 1.42;
          -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
   .page {{ position: relative; width: 210mm; height: 297mm; overflow: hidden; background: #fff; margin: 0 auto 8mm; page-break-after: always; }}
   .page:last-child {{ page-break-after: auto; }}
@@ -164,14 +151,14 @@ def build(lang):
   .main {{ position: absolute; left: 72mm; right: 12mm; }}
   .page.first .main {{ top: 62mm; bottom: 9mm; }}
   .page.rest .main {{ top: 10mm; bottom: 9mm; }}
-  .main-inner {{ height: 100%; overflow: hidden; display: flex; flex-direction: column; gap: 2.3mm; }}
+  .main-inner {{ height: 100%; overflow: hidden; display: flex; flex-direction: column; gap: 3mm; }}
 
   h3.bar {{ margin: 0 0 2.4mm; background: var(--navy); color: #fff; font-weight: 500; font-size: 9.5pt; letter-spacing: 1.2pt;
             text-transform: uppercase; text-align: center; padding: 1.4mm 2mm; }}
   .side h3.bar {{ margin-top: 4.5mm; }}
   .page.rest .side h3.bar {{ background: #fff; color: var(--navy-2); }}
   ul {{ margin: 0; padding-left: 4mm; }}
-  li {{ margin: 0 0 .5mm; }}
+  li {{ margin: 0 0 .65mm; }}
   li::marker {{ color: var(--navy); }}
   .page.rest .side li::marker {{ color: #fff; }}
 
@@ -186,7 +173,7 @@ def build(lang):
   .job-head {{ display: flex; justify-content: space-between; align-items: baseline; gap: 3mm; }}
   .job-company {{ font-weight: 700; font-size: 9.6pt; color: var(--navy); text-transform: uppercase; letter-spacing: .3pt; }}
   .job-date {{ flex: 0 0 auto; font-weight: 600; font-size: 8.2pt; color: #fff; background: var(--accent); border-radius: 3mm; padding: .4mm 2.4mm; }}
-  .job-role {{ font-weight: 600; font-size: 8.8pt; color: var(--accent); margin: .5mm 0 1.1mm; }}
+  .job-role {{ font-weight: 600; font-size: 8.8pt; color: var(--accent); margin: .6mm 0 1.5mm; }}
   .projects li {{ margin-bottom: 1.6mm; }}
   .projects b {{ color: var(--navy); }}
   .cont {{ font-size: 7.6pt; color: var(--muted); font-style: italic; margin-bottom: 1mm; }}

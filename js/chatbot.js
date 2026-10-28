@@ -655,19 +655,19 @@
     return L(lang,
       `Šta donosim timu:\n\n` +
       `- **${years}+ godina prakse** – od podrške korisnicima do sistemske administracije (Active Directory, mreže, serveri, sigurnost)\n` +
-      `- **Automatizacija** – pišem skripte i koristim alate za automatizaciju, plus AI integracije (Gemini API, Ollama)\n` +
+      `- **Automatizacija** – pišem skripte i koristim alate za automatizaciju, plus AI integracije i AI agente (Gemini API, Ollama, Claude Code)\n` +
       `- **Širina** – telekom, bankarski POS/ATM, ERP, javni sektor, web razvoj (React)\n` +
       `- **Komunikacija** – godine rada direktno sa korisnicima, pisanje dokumentacije i procedura\n` +
       `- **Brzo učenje** – samostalno sam razvio Help Desk sistem sa AI integracijom i lokalnu AI laboratoriju`,
       `What I bring to a team:\n\n` +
       `- **${years}+ years of hands-on work** – from user support to system administration (Active Directory, networks, servers, security)\n` +
-      `- **Automation** – I write scripts and use automation tools, plus AI integrations (Gemini API, Ollama)\n` +
+      `- **Automation** – I write scripts and use automation tools, plus AI integrations and AI agents (Gemini API, Ollama, Claude Code)\n` +
       `- **Breadth** – telecom, banking POS/ATM, ERP, public sector, web development (React)\n` +
       `- **Communication** – years of working directly with users, writing documentation and procedures\n` +
       `- **Fast learner** – I independently developed a help desk system with AI integration and a local AI lab`,
       `Was ich einem Team biete:\n\n` +
       `- **${years}+ Jahre Praxis** – vom Benutzersupport bis zur Systemadministration (Active Directory, Netzwerke, Server, Sicherheit)\n` +
-      `- **Automatisierung** – ich schreibe Skripte und nutze Automatisierungstools, dazu KI-Integrationen (Gemini API, Ollama)\n` +
+      `- **Automatisierung** – ich schreibe Skripte und nutze Automatisierungstools, dazu KI-Integrationen und KI-Agenten (Gemini API, Ollama, Claude Code)\n` +
       `- **Bandbreite** – Telekom, Bank-POS/ATM, ERP, öffentlicher Sektor, Webentwicklung (React)\n` +
       `- **Kommunikation** – jahrelange direkte Arbeit mit Benutzern, Erstellung von Dokumentationen und Verfahren\n` +
       `- **Schnelle Auffassungsgabe** – ich habe selbstständig ein Help-Desk-System mit KI-Integration und ein lokales KI-Labor entwickelt`);
