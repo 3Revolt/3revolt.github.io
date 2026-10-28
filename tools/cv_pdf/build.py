@@ -26,13 +26,13 @@ OUT.mkdir(exist_ok=True)
 LABELS = {
     "bs": {"profile": "Profil", "contact": "Kontakt", "languages": "Jezici", "skills": "Vještine", "soft": "Lične vještine",
            "projects": "Ključni projekti", "education": "Obrazovanje", "experience": "Radno iskustvo", "other": "Ostalo",
-           "online": "Online CV i chatbot", "scan": "Skenirajte za interaktivni CV", "born": "Datum rođenja", "course": "Kurs"},
+           "online": "Digitalni CV", "scan": "Skenirajte za interaktivni CV", "born": "Datum rođenja", "course": "Kurs"},
     "en": {"profile": "Profile", "contact": "Contact", "languages": "Languages", "skills": "Skills", "soft": "Soft skills",
            "projects": "Key projects", "education": "Education", "experience": "Work experience", "other": "Other",
-           "online": "Online CV & chatbot", "scan": "Scan for the interactive CV", "born": "Date of birth", "course": "Course"},
+           "online": "Digital CV", "scan": "Scan for the interactive CV", "born": "Date of birth", "course": "Course"},
     "de": {"profile": "Profil", "contact": "Kontakt", "languages": "Sprachen", "skills": "Kenntnisse", "soft": "Soziale Kompetenzen",
            "projects": "Wichtige Projekte", "education": "Ausbildung", "experience": "Berufserfahrung", "other": "Sonstiges",
-           "online": "Online-CV & Chatbot", "scan": "Scannen für den interaktiven Lebenslauf", "born": "Geburtsdatum", "course": "Kurs"},
+           "online": "Digitaler Lebenslauf", "scan": "Scannen für den interaktiven Lebenslauf", "born": "Geburtsdatum", "course": "Kurs"},
 }
 
 ICONS = {
