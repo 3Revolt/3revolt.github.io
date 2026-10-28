@@ -134,7 +134,7 @@ function handle_(data) {
       to: notifyEmail,
       replyTo: email,
       name: 'CV Website',
-      subject: '📩 Nova poruka sa CV sajta – ' + name,
+      subject: 'Nova poruka sa CV sajta – ' + name,  // bez emojija u naslovu (manje šanse za spam)
       body: 'Ime: ' + name + '\nEmail: ' + email + '\nJezik: ' + language + '\nVrijeme: ' + sentAt +
         '\nAutomatski odgovor poslan: ' + (autoReplySent ? 'da' : 'ne (već poslan danas)') + '\n\nPoruka:\n' + message,
       htmlBody: notificationHtml_(name, email, language, message, sentAt, autoReplySent)
