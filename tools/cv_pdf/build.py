@@ -26,13 +26,13 @@ OUT.mkdir(exist_ok=True)
 LABELS = {
     "bs": {"profile": "Profil", "contact": "Kontakt", "languages": "Jezici", "skills": "Vještine", "soft": "Lične vještine",
            "projects": "Ključni projekti", "education": "Obrazovanje", "experience": "Radno iskustvo", "other": "Ostalo",
-           "online": "Digitalni CV", "scan": "Skenirajte za interaktivni CV", "born": "Datum rođenja", "course": "Kurs"},
+           "online": "Digitalna verzija", "scan": "Skenirajte za interaktivni CV", "born": "Datum rođenja", "course": "Kurs"},
     "en": {"profile": "Profile", "contact": "Contact", "languages": "Languages", "skills": "Skills", "soft": "Soft skills",
            "projects": "Key projects", "education": "Education", "experience": "Work experience", "other": "Other",
-           "online": "Digital CV", "scan": "Scan for the interactive CV", "born": "Date of birth", "course": "Course"},
+           "online": "Digital version", "scan": "Scan for the interactive CV", "born": "Date of birth", "course": "Course"},
     "de": {"profile": "Profil", "contact": "Kontakt", "languages": "Sprachen", "skills": "Kenntnisse", "soft": "Soziale Kompetenzen",
            "projects": "Wichtige Projekte", "education": "Ausbildung", "experience": "Berufserfahrung", "other": "Sonstiges",
-           "online": "Digitaler Lebenslauf", "scan": "Scannen für den interaktiven Lebenslauf", "born": "Geburtsdatum", "course": "Kurs"},
+           "online": "Digitale Version", "scan": "Scannen für den interaktiven Lebenslauf", "born": "Geburtsdatum", "course": "Kurs"},
 }
 
 ICONS = {
@@ -179,11 +179,12 @@ def build(lang):
   .projects b {{ color: var(--navy); }}
   .cont {{ font-size: 7.6pt; color: var(--muted); font-style: italic; margin-bottom: 1mm; }}
 
-  .qr-box {{ display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2mm; }}
+  .qr-box {{ display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.6mm; margin-top: 7mm; }}
+  .qr-box .qr-label {{ font-size: 7.6pt; font-weight: 600; letter-spacing: .8pt; text-transform: uppercase; opacity: .9; }}
   .qr-box svg {{ width: 30mm; height: 30mm; background: #fff; padding: 1.6mm; border-radius: 2mm; }}
   .qr-box .qr-title {{ font-weight: 700; font-size: 9pt; letter-spacing: .6pt; text-transform: uppercase; }}
   .qr-box .qr-sub {{ font-size: 7.8pt; opacity: .85; }}
-  .qr-box a {{ color: inherit; font-weight: 600; text-decoration: none; }}
+  .qr-box a {{ color: inherit; font-size: 7.4pt; font-weight: 600; text-decoration: none; opacity: .9; }}
   .page.first .qr-small {{ margin-top: 4mm; }}
 </style>
 </head>
@@ -214,8 +215,7 @@ def build(lang):
     <div class="side">
       <h3 class="bar" style="margin-top:0">{e(L["soft"])}</h3><div class="soft">{soft}</div>
       <h3 class="bar">{e(L["other"])}</h3><div class="soft">{e(cv.DRIVING_LICENSE[lang])}</div>
-      <h3 class="bar">{e(L["online"])}</h3>
-      <div class="qr-box">{qr}<div class="qr-sub">{e(L["scan"])}</div><a href="{site}">{e(p["website"])}</a></div>
+      <div class="qr-box"><div class="qr-label">{e(L["online"])}</div>{qr}<a href="{site}">{e(p["website"])}</a></div>
     </div>
     <div class="main"><div class="main-inner"></div></div>
   </div>

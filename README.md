@@ -51,7 +51,7 @@ uz zaštitu **Cloudflare Turnstile**.
 
 - Tebi stiže poruka (Reply-To je posjetilac), a posjetiocu automatski odgovor na njegovom jeziku
 - Sve provjere rade na serveru: Turnstile token (samo sa dozvoljenih domena), skriveno polje za botove,
-  najviše 3 poruke dnevno sa iste adrese, blokada iste poruke, najviše 1 auto-reply dnevno po adresi
+  najviše 3 poruke dnevno sa iste adrese, blokada iste poruke, najviše 3 auto-replyja dnevno po adresi
   i globalni limit od 10 poruka na sat i 40 dnevno
 - `js/config.js` sadrži samo javne vrijednosti: Web app URL i Turnstile Site Key.
   **Secret Key je samo u Apps Script postavkama** (Script Properties: `TURNSTILE_SECRET`, `NOTIFY_EMAIL`)
