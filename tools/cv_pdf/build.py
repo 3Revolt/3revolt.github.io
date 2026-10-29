@@ -238,6 +238,8 @@ def build(lang):
   const pages = document.getElementById('pages');
   const newPage = (first) => {{
     const node = document.getElementById(first ? 'first-page' : 'rest-page').content.firstElementChild.cloneNode(true);
+    // Lijeva kolona (lične vještine, ostalo, QR) samo na drugoj strani - ne ponavlja se
+    if (!first && pages.querySelectorAll('.page.rest').length >= 1) node.querySelector('.side').innerHTML = '';
     pages.appendChild(node);
     return node.querySelector('.main-inner');
   }};
@@ -272,7 +274,10 @@ def build(lang):
       }}
       if (moved.length) {{
         col = newPage(false);
-        rest.querySelector('.job-head').insertAdjacentHTML('afterend', '');
+        // Nastavak posla sa prethodne strane: bez ponovljenog naziva firme, datuma i pozicije
+        rest.querySelector('.job-head').remove();
+        rest.querySelector('.job-role').remove();
+        rest.classList.add('continued');
         moved.forEach(li => rest.querySelector('ul').appendChild(li));
         col.appendChild(rest);
       }}
