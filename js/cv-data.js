@@ -638,7 +638,7 @@ window.CV_DATA = {
      "Prodaja usluga i drugih ponuda pružatelja usluga rezidencijalnim korisnicima",
      "Praćenje ispravnog funkcionisanja usluge pružatelja internet usluga",
      "Praćenje i sprovođenje obaveznog gašenja TV sadržaja",
-     "Pružanje potrebne podrške tehničarima za eksploataciju",
+     "Pružanje telefonske podrške terenskim tehničarima, uključujući konfiguraciju portova za priključenje korisnika",
      "Predlaganje budžeta i praćenje implementacije budžeta"
     ],
     "en": [
@@ -649,7 +649,7 @@ window.CV_DATA = {
      "Selling services and other provider offers to residential users",
      "Monitoring the correct functioning of the ISP service",
      "Monitoring and implementation of mandatory blackout of TV content",
-     "Providing necessary support to field technicians",
+     "Providing phone support to field technicians, including configuring ports to connect customers",
      "Proposing budgets and monitoring their implementation"
     ],
     "de": [
@@ -660,7 +660,7 @@ window.CV_DATA = {
      "Verkauf von Dienstleistungen und weiteren Angeboten des Anbieters an Privatkunden",
      "Überwachung der korrekten Funktion der Internetdienste (ISP)",
      "Überwachung und Umsetzung der obligatorischen Abschaltung von TV-Inhalten",
-     "Bereitstellung notwendiger Unterstützung für Außendiensttechniker",
+     "Telefonische Unterstützung von Außendiensttechnikern, einschließlich Konfiguration von Ports für den Kundenanschluss",
      "Erstellung von Budgetvorschlägen und Überwachung der Budgetumsetzung"
     ]
    }
@@ -878,7 +878,7 @@ window.CV_DATA = {
      "Pružanje tehničke podrške poslovnim korisnicima za ADSL, IPTV, mobilne mreže, POTS, VoIP, hosting i web email usluge",
      "Praćenje i prijavljivanje općih problema, eskalacija problema na viši nivo drugim servisima",
      "Obavljanje dužnosti operatera dežurnog tima",
-     "Pružanje potrebne podrške tehničarima za eksploataciju",
+     "Pružanje telefonske podrške terenskim tehničarima",
      "Unos svih relevantnih podataka korisnika u odgovarajuće baze podataka i aplikacije"
     ],
     "en": [
@@ -887,7 +887,7 @@ window.CV_DATA = {
      "Providing technical support to business users for ADSL, IPTV, mobile networks, POTS, VoIP, hosting and web email services",
      "Monitoring and reporting general problems and escalating them to other departments",
      "Working as an operator on duty",
-     "Providing necessary support to field technicians",
+     "Providing phone support to field technicians",
      "Entering all relevant user data into the appropriate databases and applications"
     ],
     "de": [
@@ -896,7 +896,7 @@ window.CV_DATA = {
      "Bereitstellung von technischem Support für Geschäftskunden für ADSL, IPTV, Mobilfunknetze, POTS, VoIP, Hosting und Web-E-Mail-Dienste",
      "Überwachung und Meldung allgemeiner Probleme sowie Eskalation an andere Abteilungen",
      "Tätigkeit als diensthabender Operator",
-     "Bereitstellung notwendiger Unterstützung für Außendiensttechniker",
+     "Telefonische Unterstützung von Außendiensttechnikern",
      "Eingabe aller relevanten Benutzerdaten in die entsprechenden Datenbanken und Anwendungen"
     ]
    }
@@ -943,19 +943,19 @@ window.CV_DATA = {
     "bs": [
      "Pružanje osnovne tehničke podrške korisnicima stambenih objekata",
      "Pružanje tehničke podrške poslovnim korisnicima za ADSL, IPTV, POTS i VoIP",
-     "Pružanje potrebne podrške tehničarima za eksploataciju",
+     "Pružanje telefonske podrške terenskim tehničarima",
      "Unos svih relevantnih podataka korisnika u odgovarajuće baze podataka i aplikacije"
     ],
     "en": [
      "Providing primary technical support for residential users",
      "Providing technical support to business users for ADSL, IPTV, POTS and VoIP",
-     "Providing necessary support to field technicians",
+     "Providing phone support to field technicians",
      "Entering all relevant user data into the appropriate databases and applications"
     ],
     "de": [
      "Bereitstellung primärer technischer Unterstützung für Privatkunden",
      "Bereitstellung von technischem Support für Geschäftskunden für ADSL, IPTV, POTS und VoIP",
-     "Bereitstellung notwendiger Unterstützung für Außendiensttechniker",
+     "Telefonische Unterstützung von Außendiensttechnikern",
      "Eingabe aller relevanten Benutzerdaten in die entsprechenden Datenbanken und Anwendungen"
     ]
    }
@@ -998,21 +998,21 @@ window.CV_DATA = {
      "Angažovan kao izvršilac poslova tehničke podrške u prostorijama BH Telecoma",
      "Pružanje osnovne tehničke podrške korisnicima stambenih objekata",
      "Pružanje tehničke podrške poslovnim korisnicima za ADSL, IPTV, POTS i VoIP",
-     "Pružanje potrebne podrške tehničarima za eksploataciju",
+     "Pružanje telefonske podrške terenskim tehničarima",
      "Unos svih relevantnih podataka korisnika u odgovarajuće baze podataka i aplikacije"
     ],
     "en": [
      "Performed technical support tasks on the premises of BH Telecom",
      "Providing primary technical support for residential users",
      "Providing technical support to business users for ADSL, IPTV, POTS and VoIP",
-     "Providing necessary support to field technicians",
+     "Providing phone support to field technicians",
      "Entering all relevant user data into the appropriate databases and applications"
     ],
     "de": [
      "Durchführung technischer Supportaufgaben in den Räumlichkeiten von BH Telecom",
      "Bereitstellung primärer technischer Unterstützung für Privatkunden",
      "Bereitstellung von technischem Support für Geschäftskunden für ADSL, IPTV, POTS und VoIP",
-     "Bereitstellung notwendiger Unterstützung für Außendiensttechniker",
+     "Telefonische Unterstützung von Außendiensttechnikern",
      "Eingabe aller relevanten Benutzerdaten in die entsprechenden Datenbanken und Anwendungen"
     ]
    }
