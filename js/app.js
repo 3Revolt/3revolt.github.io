@@ -72,6 +72,7 @@
     Bosanski: {
       page_about: "O meni", page_experience: "Iskustvo", select_page: "O MENI", experience_title: "Radno iskustvo",
       contact_me: "✉️ Kontaktirajte me", download_cv: "⬇️ Preuzmite CV",
+      cv_section: "📄 CV za preuzimanje",
       Skills: "Tehničke vještine", Education: "Edukacija", Projects: "Ključni projekti", Languages: "Jezici",
       your_name: "Vaše Ime", your_email: "Vaš Email", your_message: "Vaša Poruka", send: "Pošaljite",
       error_email: "Molimo unesite važeću email adresu.", error_fields: "Molimo popunite sva polja.",
@@ -96,6 +97,7 @@
     English: {
       page_about: "About Me", page_experience: "Experience", select_page: "ABOUT ME", experience_title: "Experience",
       contact_me: "✉️ Contact Me", download_cv: "⬇️ Download CV",
+      cv_section: "📄 Download my CV",
       Skills: "Technical Skills", Education: "Education", Projects: "Key Projects", Languages: "Languages",
       your_name: "Your Name", your_email: "Your Email", your_message: "Your Message", send: "Send",
       error_email: "Please enter a valid email address.", error_fields: "Please fill in all fields.",
@@ -120,6 +122,7 @@
     Deutsch: {
       page_about: "Über mich", page_experience: "Erfahrung", select_page: "ÜBER MICH", experience_title: "Arbeitserfahrung",
       contact_me: "✉️ Kontaktieren Sie mich", download_cv: "⬇️ CV herunterladen",
+      cv_section: "📄 Lebenslauf herunterladen",
       Skills: "Technische Fähigkeiten", Education: "Die Ausbildung", Projects: "Wichtige Projekte", Languages: "Sprache",
       your_name: "Ihr Name", your_email: "Ihre E-Mail", your_message: "Ihre Nachricht", send: "Senden",
       error_email: "Bitte geben Sie eine gültige E-Mail-Adresse ein.", error_fields: "Bitte füllen Sie alle Felder aus.",
@@ -275,7 +278,7 @@
     page.innerHTML = `
       <div class="heading md"><h2>${esc(t("select_page"))}</h2></div>
       <div class="columns center">
-        <div class="col col-1"><img src="assets/cv.gif" alt="${esc(p.name)}" width="800" height="600"></div>
+        <div class="col col-1"><img class="hero-anim" src="assets/cv.webp" alt="${esc(p.name)}" width="688" height="516"></div>
         <div class="col col-1">
           <div class="heading"><h1>${esc(p.name)}</h1></div>
           <div class="heading"><h3>${esc(p.role[lang])}</h3></div>
@@ -296,6 +299,14 @@
       <div class="spacer"></div>
       <div class="heading"><h3>${esc(t("Languages"))}</h3></div>
       <div class="md"><p>${CV.languages.map((l) => esc(`● ${l.label[lang]}`)).join(" ")}</p></div>
+      <div class="spacer"></div>
+      <div class="heading"><h3>${esc(t("cv_section"))}</h3></div>
+      <div class="cv-download">
+        <a class="cv-download-link" href="${CV_FILES[language]}" download="CV_${language}.pdf" title="${esc(t("download_cv"))}" aria-label="${esc(t("download_cv"))}">
+          <img class="cv-download-gif" src="assets/resume.webp" alt="" width="240" height="315" loading="lazy">
+          <span class="cv-download-badge" aria-hidden="true">⬇️</span>
+        </a>
+      </div>
       <div class="spacer"></div>
       <div class="heading"><h3 id="contact-me">${esc(t("contact_me"))}</h3></div>
       <div id="contactForm" style="display:contents"></div>

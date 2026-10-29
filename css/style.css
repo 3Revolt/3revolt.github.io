@@ -413,8 +413,21 @@ h3 { font-size: 28px; font-weight: 600; line-height: 33.6px; padding: 12px 0 16p
 .columns.split-1-3 > .col-1 { flex: 0 0 calc(25% - 8px); }
 .columns.split-1-3 > .col-3 { flex: 0 0 calc(75% - 8px); }
 .col img { display: block; width: 100%; height: auto; border-radius: 8px; }
+.col img.hero-anim { border-radius: 0; }  /* providna animacija - bez zaobljenog okvira */
 
 .br-gap { height: 76.8px; }
+
+/* Sekcija "CV za preuzimanje": klik na animiranu fasciklu (providna pozadina) preuzima CV na izabranom jeziku */
+.cv-download { display: flex; align-items: center; gap: var(--gap); }
+.cv-download-link { position: relative; display: block; width: 110px; cursor: pointer; transition: transform .2s ease, filter .2s ease;
+                    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .55)); }
+.cv-download-link:hover, .cv-download-link:focus-visible { transform: translateY(-3px) scale(1.06); outline: none;
+                    filter: drop-shadow(0 0 6px rgba(211, 54, 130, .9)) drop-shadow(0 6px 14px rgba(0, 0, 0, .6)); }
+.cv-download-gif { display: block; width: 110px; height: auto; }
+.cv-download-badge { position: absolute; right: -10px; bottom: 4px; width: 32px; height: 32px; border-radius: 50%;
+                     background: var(--primary); display: flex; align-items: center; justify-content: center; font-size: 16px;
+                     box-shadow: 0 2px 8px rgba(0, 0, 0, .5); text-shadow: none; }
+@media (max-width: 640px) { .cv-download-link, .cv-download-gif { width: 88px; } }
 
 /* ------------------------------------------------------------------------- */
 /* Chat                                                                      */
@@ -542,6 +555,10 @@ h3 { font-size: 28px; font-weight: 600; line-height: 33.6px; padding: 12px 0 16p
 }
 .block a { color: rgb(120, 190, 255); text-shadow: 0 0 2px #000, 0 0 3px #000, 0 1px 4px #000, 0 0 10px rgba(0, 0, 0, 0.9); }
 .chat-content a { color: rgb(0, 104, 201); }
+/* Dugmad-linkovi (preuzimanje CV-a) ostaju bijela kao ostala dugmad */
+.block a.st-btn { color: var(--text); }
+.block a.st-btn:hover { color: var(--primary); }
+.block a.st-btn:active { color: #fff; }
 /* Elementi sa vlastitom pozadinom ostaju bez sjene */
 .chat-message, .chat-message *, .text-field, .text-field *, .chat-input, .chat-input *,
 .col img, .html-btn, .turnstile-box, .turnstile-box * { text-shadow: none; }
