@@ -42,7 +42,7 @@ python tools/cv_pdf/build.py ../Multipage
 
 To napravi `tools/cv_pdf/out/cv-bs.html`, `cv-en.html` i `cv-de.html`. Otvori ih u Chromeu → **Print** →
 **Save as PDF** (Margins: *None*, Background graphics: *uključeno*) i sačuvaj preko starih PDF-ova
-(i u `Multipage/assets/`, za Streamlit verziju).
+(i u `Multipage/static/`, za Streamlit verziju).
 
 ## Kontakt forma
 
