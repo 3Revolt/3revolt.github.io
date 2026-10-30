@@ -79,8 +79,9 @@ jobs:
         run: |
           if [ -z "$(git status --porcelain)" ]; then
             echo "Claude nije napravio izmjene."
-            cat /tmp/popravka.md 2>/dev/null || true
-            exit 1
+            echo "===SAZETAK==="
+            cat /tmp/popravka.md 2>/dev/null || echo "Claude nije napisao sažetak."
+            exit 0
           fi
           grana="claude/popravka-${{ github.run_id }}"
           git config user.name "github-actions[bot]"
@@ -90,5 +91,7 @@ jobs:
           git commit -m "Claude popravka: ${{ inputs.grana }} (run ${{ inputs.run_id }})"
           git push origin "$grana"
           { cat /tmp/popravka.md 2>/dev/null || echo "Claude nije napisao sažetak."; echo; echo "---"; echo "Pokrenuto iz n8n (Discord). Pregledaj izmjene prije spajanja."; } > /tmp/pr.md
+          echo "===SAZETAK==="
+          cat /tmp/popravka.md 2>/dev/null || true
           gh pr create --base "${{ inputs.grana }}" --head "$grana" \
             --title "🛠️ Claude popravka (${{ inputs.grana }})" --body-file /tmp/pr.md
